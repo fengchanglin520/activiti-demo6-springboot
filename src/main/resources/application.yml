@@ -1,0 +1,17 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/act5?useSSL=true
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+
+  # activiti default configuration
+  activiti:
+    database-schema-update: true
+    check-process-definitions: true
+    process-definition-location-prefix: classpath:/processes/
+#    process-definition-location-suffixes:
+
