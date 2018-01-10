@@ -8,6 +8,7 @@ import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.Activiti5Util;
@@ -42,13 +43,10 @@ public class VacationService {
     public Object startVac(String userName, Vacation vac) {
 
         identityService.setAuthenticatedUserId(userName);
-
         // 开始流程
         ProcessInstance vacationInstance = runtimeService.startProcessInstanceByKey(PROCESS_DEFINE_KEY);
-
         // 查询当前任务
         Task currentTask = taskService.createTaskQuery().processInstanceId(vacationInstance.getId()).singleResult();
-
         // 申明任务
         taskService.claim(currentTask.getId(), userName);
 
@@ -144,8 +142,25 @@ public class VacationService {
                 .processDefinitionKey(PROCESS_DEFINE_KEY).involvedUser(userName).finished()
                 .orderByProcessInstanceEndTime().desc().list();
 
+        List<String> auditTaskNameList = new ArrayList<>();
+        auditTaskNameList.add("经理审批");
+        auditTaskNameList.add("总监审批");
         List<Vacation> vacList = new ArrayList<>();
         for (HistoricProcessInstance hisInstance : hisProInstance) {
+            List<HistoricTaskInstance> hisTaskInstanceList = historyService.createHistoricTaskInstanceQuery()
+                    .processInstanceId(hisInstance.getId()).processFinished()
+//                    .taskCandidateUser(userName)
+                    .taskNameIn(auditTaskNameList)
+                    .orderByHistoricTaskInstanceEndTime().desc().list();
+            boolean isMyAudit = false;
+            for (HistoricTaskInstance taskInstance : hisTaskInstanceList) {
+                if (taskInstance.getAssignee().equals(userName)) {
+                    isMyAudit = true;
+                }
+            }
+            if (!isMyAudit) {
+                continue;
+            }
             Vacation vacation = new Vacation();
             vacation.setApplyUser(hisInstance.getStartUserId());
             vacation.setApplyStatus("申请结束");
@@ -157,6 +172,4 @@ public class VacationService {
         }
         return vacList;
     }
-
-
 }

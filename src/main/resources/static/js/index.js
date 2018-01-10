@@ -20,7 +20,7 @@ app.controller('writeCtrl', function ($scope, $http, $window) {
 });
 app.controller('myVacCtrl', function ($scope, $http) {
 
-    $scope.vacList = [{},{},{}];
+    $scope.vacList = [];
 
     $scope.myVac = function () {
         $http.get(
