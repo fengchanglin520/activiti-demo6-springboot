@@ -17,7 +17,6 @@ app.controller('writeCtrl', function ($scope, $http, $window) {
             }
         })
     }
-
 });
 app.controller('myVacCtrl', function ($scope, $http) {
 
@@ -30,12 +29,11 @@ app.controller('myVacCtrl', function ($scope, $http) {
             $scope.vacList = response.data;
         })
     }
-
 });
 
 app.controller('myVacRecord', function ($scope, $http) {
 
-    $scope.vacList = [{},{},{}];
+    $scope.vacList = [];
 
     $scope.myVacRecord = function () {
         $http.get(
@@ -44,7 +42,6 @@ app.controller('myVacRecord', function ($scope, $http) {
             $scope.vacRecordList = response.data;
         })
     }
-
 });
 
 app.controller("myAudit", function ($scope, $http, $window) {
@@ -77,3 +74,19 @@ app.controller("myAudit", function ($scope, $http, $window) {
         })
     }
 });
+
+app.controller('myAuditRecord', function ($scope, $http) {
+
+    $scope.auditVacRecordList = [];
+
+    $scope.myAuditRecord = function () {
+        $http.get(
+            "/myAuditRecord"
+        ).then(function (response) {
+            $scope.auditVacRecordList = response.data;
+        })
+    }
+});
+
+
+

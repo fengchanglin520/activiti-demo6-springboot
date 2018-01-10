@@ -53,6 +53,7 @@ public class VacationService {
         taskService.claim(currentTask.getId(), userName);
 
         Map<String, Object> vars = new HashMap<>(4);
+        vars.put("applyUser", userName);
         vars.put("days", vac.getDays());
         vars.put("reason", vac.getReason());
 
@@ -129,6 +130,26 @@ public class VacationService {
             vacation.setApplyUser(hisInstance.getStartUserId());
             vacation.setApplyTime(hisInstance.getStartTime());
             vacation.setApplyStatus("申请结束");
+            List<HistoricVariableInstance> varInstanceList = historyService.createHistoricVariableInstanceQuery()
+                    .processInstanceId(hisInstance.getId()).list();
+            ActivitiUtil.setVars(vacation, varInstanceList);
+            vacList.add(vacation);
+        }
+        return vacList;
+    }
+
+
+    public Object myAuditRecord(String userName) {
+        List<HistoricProcessInstance> hisProInstance = historyService.createHistoricProcessInstanceQuery()
+                .processDefinitionKey(PROCESS_DEFINE_KEY).involvedUser(userName).finished()
+                .orderByProcessInstanceEndTime().desc().list();
+
+        List<Vacation> vacList = new ArrayList<>();
+        for (HistoricProcessInstance hisInstance : hisProInstance) {
+            Vacation vacation = new Vacation();
+            vacation.setApplyUser(hisInstance.getStartUserId());
+            vacation.setApplyStatus("申请结束");
+            vacation.setApplyTime(hisInstance.getStartTime());
             List<HistoricVariableInstance> varInstanceList = historyService.createHistoricVariableInstanceQuery()
                     .processInstanceId(hisInstance.getId()).list();
             ActivitiUtil.setVars(vacation, varInstanceList);

@@ -49,6 +49,7 @@
         <table border="0">
             <tr>
                 <td>时间</td>
+                <td>申请人</td>
                 <td>天数</td>
                 <td>事由</td>
                 <td>申请状态</td>
@@ -58,6 +59,7 @@
             </tr>
             <tr ng-repeat="vac in vacRecordList">
                 <td>{{vac.applyTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{vac.applyUser}}</td>
                 <td>{{vac.days}}</td>
                 <td>{{vac.reason}}</td>
                 <td>{{vac.applyStatus}}</td>
@@ -93,9 +95,30 @@
             </tr>
         </table>
     </div>
-    <div>
-        <h2>我的审核记录</h2>
-
+    <div ng-controller="myAuditRecord">
+        <h2 ng-init="myAuditRecord()">我的审核记录</h2>
+        <table border="0">
+            <tr>
+                <td>时间</td>
+                <td>申请人</td>
+                <td>天数</td>
+                <td>事由</td>
+                <td>申请状态</td>
+                <td>审核人</td>
+                <td>审核结果</td>
+                <td>审核时间</td>
+            </tr>
+            <tr ng-repeat="vac in auditVacRecordList">
+                <td>{{vac.applyTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{vac.applyUser}}</td>
+                <td>{{vac.days}}</td>
+                <td>{{vac.reason}}</td>
+                <td>{{vac.applyStatus}}</td>
+                <td>{{vac.auditor}}</td>
+                <td>{{vac.result}}</td>
+                <td>{{vac.auditTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            </tr>
+        </table>
     </div>
 </div>
 </body>

@@ -50,4 +50,10 @@ public class VacationController {
         return vacationService.myVacRecord(userName);
     }
 
+    @GetMapping("/myAuditRecord")
+    public Object myAuditRecord(HttpSession session) {
+        String userName = (String) session.getAttribute("userName");
+        return vacationService.myAuditRecord(userName);
+    }
+
 }
