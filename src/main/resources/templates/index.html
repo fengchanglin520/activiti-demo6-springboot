@@ -5,6 +5,16 @@
     <title>index</title>
     <script src="../static/js/163-angular.min.js"></script>
     <script src="../static/js/index.js"></script>
+    <style type="text/css">
+        table {
+            border: 1px solid #333;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            border-right: 1px solid #333;
+        }
+    </style>
 </head>
 <body>
 <h1>请假管理</h1>
@@ -19,12 +29,6 @@
     </div>
     <div ng-controller="myVacCtrl">
         <h2 ng-init="myVac()">我正在申请的假</h2>
-        <!--<ol>-->
-            <!--<li ng-repeat="vac in vacList">-->
-                <!--我由于 <b>{{vac.reason}}</b> 要请假 <b>{{vac.days}}</b> 天。-->
-                <!--申请时间:{{vac.applyTime | date:'yyyy-MM-dd HH:mm:ss'}}-->
-            <!--</li>-->
-        <!--</ol>-->
         <table border="0">
             <tr>
                 <td>时间</td>
@@ -40,9 +44,32 @@
             </tr>
         </table>
     </div>
+    <div ng-controller="myVacRecord">
+        <h2 ng-init="myVacRecord()">我申请过的假</h2>
+        <table border="0">
+            <tr>
+                <td>时间</td>
+                <td>天数</td>
+                <td>事由</td>
+                <td>申请状态</td>
+                <td>审核人</td>
+                <td>审核结果</td>
+                <td>审核时间</td>
+            </tr>
+            <tr ng-repeat="vac in vacRecordList">
+                <td>{{vac.applyTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{vac.days}}</td>
+                <td>{{vac.reason}}</td>
+                <td>{{vac.applyStatus}}</td>
+                <td>{{vac.auditor}}</td>
+                <td>{{vac.result}}</td>
+                <td>{{vac.auditTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            </tr>
+        </table>
+    </div>
     <div ng-controller="myAudit">
         <h2 ng-init="myAudit()">待我审核的请假</h2>
-        <table border="0" cellspacing="5">
+        <table border="0">
             <tr>
                 <td>任务名称</td>
                 <td>任务时间</td>
@@ -60,7 +87,8 @@
                 <td>{{vacTask.vac.days}}</td>
                 <td>{{vacTask.vac.reason}}</td>
                 <td>
-                    <button type="button" ng-click="passAudit(vacTask.id)">通过审核</button>
+                    <button type="button" ng-click="passAudit(vacTask.id, 1)">审核通过</button>
+                    <button type="button" ng-click="passAudit(vacTask.id, 0)">审核拒绝</button>
                 </td>
             </tr>
         </table>

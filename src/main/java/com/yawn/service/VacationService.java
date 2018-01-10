@@ -2,15 +2,22 @@ package com.yawn.service;
 
 import com.yawn.entity.VacTask;
 import com.yawn.entity.Vacation;
+import com.yawn.util.ActivitiUtil;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.util.Activiti5Util;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.activiti.spring.integration.Activiti;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -25,13 +32,19 @@ public class VacationService {
     private IdentityService identityService;
     @Resource
     private TaskService taskService;
+    @Resource
+    private HistoryService historyService;
+
+
+    private static final String PROCESS_DEFINE_KEY = "vacationProcess";
+
 
     public Object startVac(String userName, Vacation vac) {
 
         identityService.setAuthenticatedUserId(userName);
 
         // 开始流程
-        ProcessInstance vacationInstance = runtimeService.startProcessInstanceByKey("vacationProcess");
+        ProcessInstance vacationInstance = runtimeService.startProcessInstanceByKey(PROCESS_DEFINE_KEY);
 
         // 查询当前任务
         Task currentTask = taskService.createTaskQuery().processInstanceId(vacationInstance.getId()).singleResult();
@@ -93,9 +106,36 @@ public class VacationService {
         return vacTaskList;
     }
 
-    public Object passAudit(String userName, String taskId) {
+    public Object passAudit(String userName, VacTask vacTask) {
+        String taskId = vacTask.getId();
+        String result = vacTask.getVac().getResult();
+        Map<String, Object> vars = new HashMap<>();
+        vars.put("result", result);
+        vars.put("auditor", userName);
+        vars.put("auditTime", new Date());
         taskService.claim(taskId, userName);
-        taskService.complete(taskId);
+        taskService.complete(taskId, vars);
         return true;
     }
+
+    public Object myVacRecord(String userName) {
+        List<HistoricProcessInstance> hisProInstance = historyService.createHistoricProcessInstanceQuery()
+                .processDefinitionKey(PROCESS_DEFINE_KEY).startedBy(userName).finished()
+                .orderByProcessInstanceEndTime().desc().list();
+
+        List<Vacation> vacList = new ArrayList<>();
+        for (HistoricProcessInstance hisInstance : hisProInstance) {
+            Vacation vacation = new Vacation();
+            vacation.setApplyUser(hisInstance.getStartUserId());
+            vacation.setApplyTime(hisInstance.getStartTime());
+            vacation.setApplyStatus("申请结束");
+            List<HistoricVariableInstance> varInstanceList = historyService.createHistoricVariableInstanceQuery()
+                    .processInstanceId(hisInstance.getId()).list();
+            ActivitiUtil.setVars(vacation, varInstanceList);
+            vacList.add(vacation);
+        }
+        return vacList;
+    }
+
+
 }

@@ -1,5 +1,5 @@
 var app = angular.module('vacApp', []);
-app.controller('loginCtrl', function ($scope, $http, $location) {
+app.controller('loginCtrl', function ($scope, $http) {
     $scope.userName = "empa";
     $scope.password = "123456";
 
@@ -12,7 +12,6 @@ app.controller('loginCtrl', function ($scope, $http, $location) {
             }
         ).then(function (response) {
             if (response.data == true) {
-                alert(response.data);
                 window.location = "/index";
             }
         })

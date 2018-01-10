@@ -41,7 +41,13 @@ public class VacationController {
     @PostMapping("/passAudit")
     public Object passAudit(HttpSession session, @RequestBody VacTask vacTask) {
         String userName = (String) session.getAttribute("userName");
-        return vacationService.passAudit(userName, vacTask.getId());
+        return vacationService.passAudit(userName, vacTask);
+    }
+
+    @GetMapping("/myVacRecord")
+    public Object myVacRecord(HttpSession session) {
+        String userName = (String) session.getAttribute("userName");
+        return vacationService.myVacRecord(userName);
     }
 
 }

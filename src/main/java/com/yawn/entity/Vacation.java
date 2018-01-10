@@ -7,11 +7,22 @@ import java.util.Date;
  */
 public class Vacation {
 
+    /**
+     * 申请人
+     */
     private String applyUser;
     private int days;
     private String reason;
     private Date applyTime;
     private String applyStatus;
+
+    /**
+     * 审核人
+     */
+    private String auditor;
+    private String result;
+    private Date auditTime;
+
 
     public String getApplyStatus() {
         return applyStatus;
@@ -51,5 +62,30 @@ public class Vacation {
 
     public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
+    }
+
+
+    public String getAuditor() {
+        return auditor;
+    }
+
+    public void setAuditor(String auditor) {
+        this.auditor = auditor;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public Date getAuditTime() {
+        return auditTime;
+    }
+
+    public void setAuditTime(Date auditTime) {
+        this.auditTime = auditTime;
     }
 }
