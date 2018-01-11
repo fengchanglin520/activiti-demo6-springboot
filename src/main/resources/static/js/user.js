@@ -4,7 +4,6 @@ app.controller("userCtrl", function ($scope, $http) {
     $scope.userList = [];
     $scope.groupList = [];
     $scope.groupUserList = [];
-    $scope.currentGroup = "";
 
     $scope.getAllUser = function () {
         $http.get(
@@ -22,10 +21,10 @@ app.controller("userCtrl", function ($scope, $http) {
         })
     };
 
-    $scope.getGroupUser = function (groupId) {
-        $scope.currentGroup = groupId;
+    $scope.getGroupUser = function (group) {
+        $scope.currentGroup = group.name + "(" + group.id + ")";
         $http.get(
-            "/getUserGroup?groupId=" + groupId
+            "/getUserGroup?groupId=" + group.id
         ).then(function (response) {
             $scope.groupUserList = response.data;
         })

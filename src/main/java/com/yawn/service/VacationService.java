@@ -81,7 +81,8 @@ public class VacationService {
 
 
     public Object myAudit(String userName) {
-        List<Task> taskList = taskService.createTaskQuery().taskCandidateUser(userName).list();
+        List<Task> taskList = taskService.createTaskQuery().taskCandidateUser(userName)
+                .orderByTaskCreateTime().desc().list();
 //        / 多此一举 taskList中包含了以下内容(用户的任务中包含了所在用户组的任务)
 //        Group group = identityService.createGroupQuery().groupMember(userName).singleResult();
 //        List<Task> list = taskService.createTaskQuery().taskCandidateGroup(group.getId()).list();
