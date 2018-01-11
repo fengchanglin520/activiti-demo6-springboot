@@ -10,15 +10,11 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
-import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.util.Activiti5Util;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.activiti.spring.integration.Activiti;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -149,7 +145,7 @@ public class VacationService {
         for (HistoricProcessInstance hisInstance : hisProInstance) {
             List<HistoricTaskInstance> hisTaskInstanceList = historyService.createHistoricTaskInstanceQuery()
                     .processInstanceId(hisInstance.getId()).processFinished()
-//                    .taskCandidateUser(userName)
+                    .taskAssignee(userName)
                     .taskNameIn(auditTaskNameList)
                     .orderByHistoricTaskInstanceEndTime().desc().list();
             boolean isMyAudit = false;

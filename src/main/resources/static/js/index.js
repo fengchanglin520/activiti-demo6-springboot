@@ -1,7 +1,7 @@
 var app = angular.module('vacApp', []);
 app.controller('writeCtrl', function ($scope, $http, $window) {
-    $scope.days = 0;
-    $scope.reason = "aaaa";
+    $scope.days = 1;
+    $scope.reason = "有紧急事情";
 
     $scope.applyVac = function () {
         $http.post(

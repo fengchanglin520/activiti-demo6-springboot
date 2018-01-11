@@ -22,6 +22,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/index");
+        registry.addViewController("/user");
 //        registry.addRedirectViewController("/index","/templates/index.html");
         registry.addRedirectViewController("/","/templates/login.html");
 //        registry.addStatusController("/403", HttpStatus.FORBIDDEN);

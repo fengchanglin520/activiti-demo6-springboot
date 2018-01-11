@@ -9,6 +9,8 @@ public class User {
 
     private String password;
 
+    private String groupName;
+
     public String getUserName() {
         return userName;
     }
@@ -23,5 +25,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 }

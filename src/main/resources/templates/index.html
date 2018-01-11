@@ -7,25 +7,51 @@
     <script src="../static/js/index.js"></script>
     <style type="text/css">
         table {
-            border: 1px solid #333;
+            margin: 20px auto;
+            background-color: #DDDDDD;
+            width: 60%;
+            min-width: 900px;
         }
+
         td {
             padding: 10px;
-            border-bottom: 1px solid #333;
-            border-right: 1px solid #333;
+            border-bottom: 1px solid #666666;
+            border-right: 1px solid #666666;
+            cursor: hand;
+        }
+
+        td:hover {
+            padding: 8px;
+            border: 1px solid #AAAAAA;
+            border-bottom: 2px solid #666666;
+            border-right: 2px solid #666666;
+        }
+
+        h1, h2, p, div {
+            text-align: center;
+            width: 100%;
         }
     </style>
 </head>
 <body>
 <h1>请假管理</h1>
-<p><a href="/exit">exit</a></p>
+<p>
+    <a href="/user">user</a>
+    <a href="/exit">exit</a>
+</p>
 <div ng-app="vacApp">
     <div ng-controller="writeCtrl">
         <h2>我要请假</h2>
-        <p>
-            我由于<input type="text" ng-model="reason"/>要请假<input type="number" ng-model="days"/>天。
-        </p>
-        <button ng-click="applyVac()">确定请假</button>
+        <table border="0">
+            <tr>
+                <td>
+                    我由于<input type="text" ng-model="reason"/>要请假<input type="number" min="1" ng-model="days"/>天。
+                </td>
+                <td>
+                    <button ng-click="applyVac()">确定请假</button>
+                </td>
+            </tr>
+        </table>
     </div>
     <div ng-controller="myVacCtrl">
         <h2 ng-init="myVac()">我正在申请的假</h2>
