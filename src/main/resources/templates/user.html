@@ -3,23 +3,53 @@
 <head>
     <meta charset="UTF-8"/>
     <title>用户管理</title>
+    <script src="../static/js/163-angular.min.js"></script>
+    <script src="../static/js/user.js"></script>
+    <link rel="stylesheet" href="../static/css/style.css" type="text/css" />
 </head>
-<body>
-<div>
+<body ng-app="userApp">
+<div ng-controller="userCtrl">
     <h1>用户管理</h1>
-    <div>
+    <div ng-init="getAllUser()">
         <h2>注册的用户</h2>
         <table border="0">
             <tr>
-                <td></td>
+                <td>用户名</td>
+                <td>密码</td>
+            </tr>
+            <tr ng-repeat="user in userList">
+                <td>{{user.userName}}</td>
+                <td>{{user.password}}</td>
+            </tr>
+        </table>
+    </div>
+    <div ng-init="getAllGroup()">
+        <h2>用户组</h2>
+        <table border="0">
+            <tr>
+                <td>组标识</td>
+                <td>组名称</td>
+                <td>查看成员</td>
+            </tr>
+            <tr ng-repeat="group in groupList">
+                <td>{{group.id}}</td>
+                <td>{{group.name}}</td>
+                <td>
+                    <button ng-click="getGroupUser(group.id)">查看成员</button>
+                </td>
             </tr>
         </table>
     </div>
     <div>
-        <h2>用户组</h2>
+        <h2>用户组 {{currentGroup}} 的成员</h2>
         <table border="0">
             <tr>
-                <td></td>
+                <td>用户名</td>
+                <td>密码</td>
+            </tr>
+            <tr ng-repeat="user in groupUserList">
+                <td>{{user.userName}}</td>
+                <td>{{user.password}}</td>
             </tr>
         </table>
     </div>

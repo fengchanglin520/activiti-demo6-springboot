@@ -20,5 +20,15 @@ public class UserController {
         return userService.getAllUser();
     }
 
+    @GetMapping("/getAllGroup")
+    public Object getAllGroup() {
+        return userService.getAllGroup();
+    }
+
+    @GetMapping("/getUserGroup")
+    public Object getUserGroup(String groupId) {
+        return userService.getUserGroup(groupId);
+    }
+
 
 }

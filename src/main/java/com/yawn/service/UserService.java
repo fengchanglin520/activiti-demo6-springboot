@@ -1,6 +1,8 @@
 package com.yawn.service;
 
+import com.yawn.entity.UserGroup;
 import org.activiti.engine.IdentityService;
+import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +25,31 @@ public class UserService {
 
     public Object getAllUser() {
         List<User> userList = identityService.createUserQuery().list();
+        return toMyUser(userList);
+    }
+
+    public Object getAllGroup() {
+        List<Group> groupList = identityService.createGroupQuery().list();
+        List<UserGroup> userGroupList = new ArrayList<>();
+        for (Group group : groupList) {
+            UserGroup userGroup = new UserGroup();
+            userGroup.setId(group.getId());
+            userGroup.setName(group.getName());
+            userGroupList.add(userGroup);
+        }
+        return userGroupList;
+    }
+
+    public Object getUserGroup(String groupId) {
+        List<User> userList = identityService.createUserQuery().memberOfGroup(groupId).list();
+        return toMyUser(userList);
+    }
+
+    private List<com.yawn.entity.User> toMyUser(List<User> userList) {
         List<com.yawn.entity.User> myUserList = new ArrayList<>();
         for (User user : userList) {
             com.yawn.entity.User myUser = new com.yawn.entity.User();
-            myUser.setUserName(user.getFirstName() + "·" + user.getLastName());
+            myUser.setUserName(user.getId());
             myUser.setPassword(user.getPassword());
             myUserList.add(myUser);
         }
