@@ -1,8 +1,8 @@
 package com.yawn.controller;
 
+import com.yawn.entity.User;
 import com.yawn.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -28,6 +28,11 @@ public class UserController {
     @GetMapping("/getUserGroup")
     public Object getUserGroup(String groupId) {
         return userService.getUserGroup(groupId);
+    }
+
+    @PostMapping("/addUser")
+    public Object addUser(@RequestBody User user) {
+        return userService.addUser(user);
     }
 
 

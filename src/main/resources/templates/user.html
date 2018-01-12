@@ -5,7 +5,7 @@
     <title>用户管理</title>
     <script src="../static/js/163-angular.min.js"></script>
     <script src="../static/js/user.js"></script>
-    <link rel="stylesheet" href="../static/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/style.css" type="text/css"/>
 </head>
 <body ng-app="userApp">
 <div ng-controller="userCtrl">
@@ -56,6 +56,32 @@
                 <td>{{user.password}}</td>
             </tr>
         </table>
+    </div>
+    <div>
+        <h2>添加用户</h2>
+            <table border="0">
+                <tr>
+                    <td>用户名</td>
+                    <td>
+                        <input ng-model="user.userName"/>
+                    </td>
+                    <td rowspan="3">
+                        <button ng-click="addUser()">添加</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>密码</td>
+                    <td>
+                        <input ng-model="user.password" value="123456"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>用户组</td>
+                    <td>
+                        <select ng-model="user.groupId" ng-options="group.id as group.name for group in groupList"/>
+                    </td>
+                </tr>
+            </table>
     </div>
 </div>
 

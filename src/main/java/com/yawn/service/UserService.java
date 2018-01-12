@@ -55,4 +55,14 @@ public class UserService {
         }
         return myUserList;
     }
+
+    public Object addUser(com.yawn.entity.User user) {
+        String userId = user.getUserName();
+        String groupId = user.getGroupId();
+        User actUser = identityService.newUser(userId);
+        actUser.setPassword(user.getPassword());
+        identityService.saveUser(actUser);
+        identityService.createMembership(userId, groupId);
+        return true;
+    }
 }

@@ -9,7 +9,7 @@ public class User {
 
     private String password;
 
-    private String groupName;
+    private String groupId;
 
     public String getUserName() {
         return userName;
@@ -27,11 +27,11 @@ public class User {
         this.password = password;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }

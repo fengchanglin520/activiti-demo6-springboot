@@ -4,6 +4,7 @@ app.controller("userCtrl", function ($scope, $http) {
     $scope.userList = [];
     $scope.groupList = [];
     $scope.groupUserList = [];
+    $scope.user = {"password": "123456"};
 
     $scope.getAllUser = function () {
         $http.get(
@@ -29,6 +30,17 @@ app.controller("userCtrl", function ($scope, $http) {
             $scope.groupUserList = response.data;
         })
     };
+
+    $scope.addUser = function () {
+        $http.post(
+            "/addUser",
+            $scope.user
+        ).then(function (response) {
+            if (response.data == true) {
+                alert("操作成功！");
+            }
+        })
+    }
 
 
 });
